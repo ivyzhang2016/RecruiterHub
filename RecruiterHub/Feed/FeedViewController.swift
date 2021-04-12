@@ -215,10 +215,66 @@ extension FeedViewController: FeedActionsCellDelegate {
         print("Tapped Like")
     }
     
-    func didTapSendButton(vc: UIViewController) {
+    func didTapSendButton(otherUserEmail: String, id: String) {
         print("Tapped Send")
         
+        let vc = ChatViewController(with: otherUserEmail, id: id)
+        vc.isNewConversation = false
+        vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
+
+//        DatabaseManager.shared.getAllConversations(for: currentUserEmail.safeDatabaseKey(), completion: { [weak self]
+//            conversations in
+//
+//            switch conversations {
+//            case .success(let conversations):
+//                if let targetConversation = conversations.first(where: {
+//                    $0.otherUserEmail == DatabaseManager.safeEmail(emailAddress: otherUserEmail)
+//                }) {
+//                    print("Want to append conversation")
+//                    let vc = ChatViewController(with: targetConversation.otherUserEmail, id: targetConversation.id)
+//                    vc.isNewConversation = false
+//                    vc.title = targetConversation.name
+//                    vc.navigationItem.largeTitleDisplayMode = .never
+//                    DispatchQueue.main.async {
+//                        self?.navigationController?.pushViewController(vc, animated: true)
+//                    }
+//                }
+//                else {
+//                    print("Want to create a new conversation")
+//                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
+//                        user in
+//                        guard let user = user else {
+//                            return
+//                        }
+//                        let result = SearchResult(name: user.name, email: user.safeEmail)
+////                        self?.createNewConversation(result: result)
+//                    })
+//                }
+//                break
+//            case .failure(let error):
+//                switch error {
+//                case DatabaseManager.DatabaseError.failedToFetch:
+//                    print("Failed to Fetch")
+//                    break
+//                case DatabaseManager.DatabaseError.conversationsEmpty:
+//                    print("Convos Empty")
+//                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
+//                        user in
+//                        guard let user = user else {
+//                            return
+//                        }
+//                        let result = SearchResult(name: user.name, email: user.safeEmail)
+////                        self?.createNewConversation(result: result)
+//                    })
+//                    break
+//                default:
+//                    break
+//                }
+//                break
+//            }
+//        })
+//        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -46,7 +46,6 @@ class ChatViewController: MessagesViewController {
         DatabaseManager.shared.getAllMessagesForConversations(for: id, completion: { [weak self] result in
             switch result {
             case .success(let messages):
-                print("Success in getting messages: \(messages)")
                 guard !messages.isEmpty else {
                     print("messages are empty")
                     return
@@ -88,7 +87,15 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
         setupInputButton()
-        print(messages)
+        
+        DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self] user in
+            guard let user = user else {
+                return
+            }
+            DispatchQueue.main.async {
+                self?.title = user.name
+            }
+        })
     }
     
     private func setupInputButton() {
@@ -326,9 +333,9 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         guard !text.replacingOccurrences(of: " ", with: "").isEmpty,
             let selfSender = self.selfSender,
             let messageId = createMessageId() else {
+            print("Something weird happened")
             return
         }
-        
         
         let message = Message(sender: selfSender, messageId: messageId, sentDate: Date(), kind: .text(text))
         
@@ -336,6 +343,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         if isNewConversation {
             //Create convo in database
             DatabaseManager.shared.createNewConversation(with: otherUserEmail, name: title ?? "User", firstMessage: message, completion: { [weak self] success in
+
                 if success {
                     print("Message Sent")
                     self?.isNewConversation = false
@@ -348,6 +356,7 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
                     print("Failed to send")
                 }
             })
+            print("Pressed Send")
         }
         
         else {
