@@ -215,13 +215,21 @@ extension FeedViewController: FeedActionsCellDelegate {
         print("Tapped Like")
     }
     
-    func didTapSendButton(otherUserEmail: String, id: String) {
+    func didTapSendButton(otherUserEmail: String, id: String?) {
         print("Tapped Send")
-        
-        let vc = ChatViewController(with: otherUserEmail, id: id)
-        vc.isNewConversation = false
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(vc, animated: true)
+        if let id = id {
+            print(<#T##items: Any...##Any#>)
+            let vc = ChatViewController(with: otherUserEmail, id: id)
+            vc.isNewConversation = false
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        else {
+            let vc = ChatViewController(with: otherUserEmail, id: nil)
+            vc.isNewConversation = true
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        }
 
 //        DatabaseManager.shared.getAllConversations(for: currentUserEmail.safeDatabaseKey(), completion: { [weak self]
 //            conversations in

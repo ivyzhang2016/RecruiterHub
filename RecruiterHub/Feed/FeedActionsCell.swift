@@ -11,7 +11,7 @@ protocol FeedActionsCellDelegate: AnyObject {
     func didTapLikeButton()
     func didTapCommentButton(email: String, url: String)
 //    func didTapSendButton(vc: UIViewController)
-    func didTapSendButton(otherUserEmail: String, id: String)
+    func didTapSendButton(otherUserEmail: String, id: String?)
 }
 
 class FeedActionsCell: UITableViewCell {
@@ -132,8 +132,6 @@ class FeedActionsCell: UITableViewCell {
             return
         }
         
-        let id = "conversation_ryanhelgeson14-gmail-com_blank-gmail-com_Apr 11, 2021 at 9:56:57 PM CDT"
-        
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String
         else {
             print("Failed to get User Defaults")
@@ -151,67 +149,67 @@ class FeedActionsCell: UITableViewCell {
                     print("Want to append conversation")
                     self?.delegate?.didTapSendButton(otherUserEmail: otherUserEmail, id: targetConversation.id)
                 }
-//                else {
-//                    print("Want to create a new conversation")
-//                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
-//                        user in
-//                        guard let user = user else {
-//                            return
-//                        }
-//                        let result = SearchResult(name: user.name, email: user.safeEmail)
-////                        self?.createNewConversation(result: result)
-//                    })
-//                }
+                else {
+                    print("Want to create a new conversation")
+                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
+                        user in
+                        guard let user = user else {
+                            return
+                        }
+                        let result = SearchResult(name: user.name, email: user.safeEmail)
+                        self?.createNewConversation(result: result)
+                    })
+                }
                 break
             case .failure(let error):
-//                switch error {
-//                case DatabaseManager.DatabaseError.failedToFetch:
-//                    print("Failed to Fetch")
-//                    break
-//                case DatabaseManager.DatabaseError.conversationsEmpty:
-//                    print("Convos Empty")
-//                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
-//                        user in
-//                        guard let user = user else {
-//                            return
-//                        }
-//                        let result = SearchResult(name: user.name, email: user.safeEmail)
-////                        self?.createNewConversation(result: result)
-//                    })
-//                    break
-//                default:
-//                    break
-//                }
+                switch error {
+                case DatabaseManager.DatabaseError.failedToFetch:
+                    print("Failed to Fetch")
+                    break
+                case DatabaseManager.DatabaseError.conversationsEmpty:
+                    print("Convos Empty")
+                    DatabaseManager.shared.getDataForUser(user: otherUserEmail.safeDatabaseKey(), completion: { [weak self]
+                        user in
+                        guard let user = user else {
+                            return
+                        }
+                        let result = SearchResult(name: user.name, email: user.safeEmail)
+                        self?.createNewConversation(result: result)
+                    })
+                    break
+                default:
+                    break
+                }
                 break
             }
         })
     }
     
-//    private func createNewConversation(result: SearchResult) {
-//        let name = result.name
-//        let email = result.email
-//
-//        // Check in the database if the conversation with these two users exists
-//        // if it does, reuse conversatiionid
-//        // if not create new
-//        DatabaseManager.shared.conversationExists(with: email, completion: { [weak self] result in
-//
-//            switch result {
-//            case .success(let conversationId):
-//                let vc = ChatViewController(with: email, id: conversationId)
-//                vc.isNewConversation = false
-//                vc.title = name
-//                vc.navigationItem.largeTitleDisplayMode = .never
-////                self?.delegate?.didTapSendButton(vc: vc)
-//            case .failure(_):
-//                let vc = ChatViewController(with: email, id: nil)
-//                vc.isNewConversation = true
-//                vc.title = name
-//                vc.navigationItem.largeTitleDisplayMode = .never
-////                self?.delegate?.didTapSendButton(vc: vc)
-//            }
-//        })
-//    }
+    private func createNewConversation(result: SearchResult) {
+        let name = result.name
+        let email = result.email
+
+        // Check in the database if the conversation with these two users exists
+        // if it does, reuse conversatiionid
+        // if not create new
+        DatabaseManager.shared.conversationExists(with: email, completion: { [weak self] result in
+
+            switch result {
+            case .success(let conversationId):
+                let vc = ChatViewController(with: email, id: conversationId)
+                vc.isNewConversation = false
+                vc.title = name
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.delegate?.didTapSendButton(otherUserEmail: email, id: conversationId)
+            case .failure(_):
+                let vc = ChatViewController(with: email, id: nil)
+                vc.isNewConversation = true
+                vc.title = name
+                vc.navigationItem.largeTitleDisplayMode = .never
+                self?.delegate?.didTapSendButton(otherUserEmail: email, id: nil)
+            }
+        })
+    }
     
     public func configure( with urlString: String, email: String) {
         // Configure the cell
