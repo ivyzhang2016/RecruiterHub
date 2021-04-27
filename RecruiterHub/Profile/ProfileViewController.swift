@@ -246,8 +246,7 @@ extension ProfileViewController: ProfileHeaderDelegate {
 }
 
 extension ProfileViewController: ProfileTabsDelegate {
-    func didTapGridButtonTab() {
-        print("Tapped the grid")
+    func didTapInfoButtonTab() {
         let vc = ContactInformationViewController(user: user)
         vc.title = "Contact Information"
         vc.modalTransitionStyle = .flipHorizontal
@@ -265,7 +264,17 @@ extension ProfileViewController: ProfileTabsDelegate {
 
 extension ProfileViewController: ProfileConnectionsDelegate {
     func didTapEndorsementsButton(_ profileConnections: ProfileConnections) {
-        // TODO 
+        // TODO
+        DatabaseManager.shared.getUserEndorsements(email: user.emailAddress.safeDatabaseKey(), completion: { [weak self] endorsers in
+            var data:[[String:String]] = []
+            if let endorsers = endorsers {
+                    data = endorsers
+            }
+            let vc = ListsViewController(data: data)
+            vc.title = "Endorsers"
+            self?.navigationController?.pushViewController(vc, animated: false)
+            return
+        })
     }
     
 

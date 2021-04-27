@@ -32,8 +32,6 @@ class ConversationsViewController: UIViewController {
         return label
     }()
     
-    private var loginObserver: NSObjectProtocol?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,10 +46,6 @@ class ConversationsViewController: UIViewController {
     private func startListeningForConversations() {
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return
-        }
-        
-        if let observer = loginObserver {
-            NotificationCenter.default.removeObserver(observer)
         }
         
         print("Starting conversations to fetch... ")
@@ -78,7 +72,6 @@ class ConversationsViewController: UIViewController {
                 self?.noConversationsLabel.isHidden = false
                 print("Failed to get convos: \(error)")
             }
-            
         })
     }
     
@@ -142,19 +135,6 @@ class ConversationsViewController: UIViewController {
         noConversationsLabel.frame = CGRect(x: 10, y: (view.height-100)/2, width: view.width-20, height: 100)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        validateAuth()
-    }
-
-    private func validateAuth() {
-        if FirebaseAuth.Auth.auth().currentUser == nil {
-            let vc = LoginViewController()
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: false)
-        }
-    }
-    
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self

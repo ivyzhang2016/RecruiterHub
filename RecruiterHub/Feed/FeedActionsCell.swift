@@ -10,7 +10,6 @@ import UIKit
 protocol FeedActionsCellDelegate: AnyObject {
     func didTapLikeButton()
     func didTapCommentButton(email: String, url: String)
-//    func didTapSendButton(vc: UIViewController)
     func didTapSendButton(otherUserEmail: String, id: String?)
 }
 
@@ -32,7 +31,6 @@ class FeedActionsCell: UITableViewCell {
         button.tintColor = .label
         return button
     }()
-
     
     private let likeButton: UIButton = {
         let button = UIButton()
@@ -52,7 +50,6 @@ class FeedActionsCell: UITableViewCell {
         return button
     }()
 
-    
     override init(style:UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .systemBackground

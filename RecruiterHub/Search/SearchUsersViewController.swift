@@ -92,7 +92,7 @@ extension SearchUserViewController: UISearchBarDelegate {
         searchUsers(query: text)
     }
     
-    func searchUsers(query: String) {
+    private func searchUsers(query: String) {
         //Check if array has firebase result
         if hasFetched {
             //if it does: filter
@@ -122,7 +122,7 @@ extension SearchUserViewController: UISearchBarDelegate {
         }
     }
     
-    func filterUsers(with term: String) {
+    private func filterUsers(with term: String) {
         guard let currentUserEmail = UserDefaults.standard.value(forKey: "email") as? String, hasFetched else {
             print("Failed to Filter")
             return
@@ -152,7 +152,7 @@ extension SearchUserViewController: UISearchBarDelegate {
         updateUI()
     }
     
-    func updateUI() {
+    private func updateUI() {
         if results.isEmpty {
             noResultsLabel.isHidden = false
             tableView.isHidden = true

@@ -11,13 +11,6 @@ import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Image")
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
     private let emailField: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
@@ -194,12 +187,6 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: "Whoops", message: "Please enter all information to login", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(alert, animated: true)
-    }
-    
-    @objc private func didTapRegister() {
-        let vc = RegisterViewController()
-        vc.title = "CreateAccount"
-        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -209,8 +209,7 @@ class RegisterViewController: UIViewController {
         Keyboard.keyboardWillHide(vc: self)
     }
     
-    
-    func presentPhotoActionSheet() {
+    private func presentPhotoActionSheet() {
         let actionSheet = UIAlertController(title: "Profile Picture", message: "How would you like to select a picture?", preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -227,7 +226,7 @@ class RegisterViewController: UIViewController {
     }
     
     /// Presents the camera to take a photo
-    func presentCamera() {
+    private func presentCamera() {
         let vc = UIImagePickerController()
         vc.sourceType = .camera
         vc.delegate = self
@@ -236,7 +235,7 @@ class RegisterViewController: UIViewController {
     }
     
     /// Presents the photo library to select a photo
-    func presentPhotoPicker() {
+    private func presentPhotoPicker() {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
         vc.delegate = self

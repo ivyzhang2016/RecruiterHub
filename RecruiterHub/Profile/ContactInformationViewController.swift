@@ -16,9 +16,9 @@ class ContactInformationViewController: UIViewController {
 
     private let user: RHUser
     
-    var models: [ContactInfoModel] = []
+    private var models: [ContactInfoModel] = []
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let table = UITableView()
         table.layer.masksToBounds = true
         table.register(ContactInfoCell.self, forCellReuseIdentifier: ContactInfoCell.identifier)

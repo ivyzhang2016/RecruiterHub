@@ -20,19 +20,7 @@ class OtherUserViewController: UIViewController {
     private var user: RHUser
     
     private var posts: [[String: Any]]?
-    
-    let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
-    }()
-    
-    let backgroundImage: UIImageView = {
-       let imageView = UIImageView()
-        imageView.image = UIImage(named: "gradient")
-        imageView.layer.masksToBounds = true
-        return imageView
-    }()
-    
+
     init(user: RHUser) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
@@ -210,7 +198,7 @@ extension OtherUserViewController: ProfileHeaderDelegate {
 }
 
 extension OtherUserViewController: ProfileTabsDelegate {
-    func didTapGridButtonTab() {
+    func didTapInfoButtonTab() {
         let vc = ContactInformationViewController(user: user)
         vc.title = "Contact Information"
         navigationController?.pushViewController(vc, animated: false)
@@ -226,6 +214,16 @@ extension OtherUserViewController: ProfileTabsDelegate {
 extension OtherUserViewController: ProfileConnectionsDelegate {
     func didTapEndorsementsButton(_ profileConnections: ProfileConnections) {
         //TODO
+        DatabaseManager.shared.getUserEndorsements(email: user.emailAddress.safeDatabaseKey(), completion: { [weak self] endorsers in
+            var data:[[String:String]] = []
+            if let endorsers = endorsers {
+                    data = endorsers
+            }
+            let vc = ListsViewController(data: data)
+            vc.title = "Endorsers"
+            self?.navigationController?.pushViewController(vc, animated: false)
+            return
+        })
     }
     
     func didTapFollowingButton(_ profileConnections: ProfileConnections) {

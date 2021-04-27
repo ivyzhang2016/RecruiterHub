@@ -11,7 +11,7 @@ import AVKit
 
 class NewPostViewController: UIViewController {
 
-    private let testingButton: UIButton = {
+    private let newVideoButton: UIButton = {
         let button = UIButton()
         button.setTitle("New Video", for: .normal)
         button.layer.masksToBounds = true
@@ -22,16 +22,16 @@ class NewPostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        testingButton.addTarget(self, action: #selector(didTapTest), for: .touchUpInside)
+        newVideoButton.addTarget(self, action: #selector(didTapTest), for: .touchUpInside)
         
-        view.addSubview(testingButton)
+        view.addSubview(newVideoButton)
     }
     
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        testingButton.frame = CGRect(x: 20, y: view.safeAreaInsets.top + 10, width: view.width - 40, height: 52)
+        newVideoButton.frame = CGRect(x: 20, y: view.safeAreaInsets.top + 10, width: view.width - 40, height: 52)
     }
     
     @objc private func didTapTest() {
@@ -83,7 +83,7 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
         print("Attempt video upload")
 
         if let videoUrl = info[.mediaURL] as? URL {
-            guard let fileName = createVideoId() as String? else {
+            guard let filename = createVideoId() as String? else {
                 return
             }
             var video:Data
@@ -98,21 +98,8 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
                 return
             }
             
-            let vc = AddCaptionViewController(email: email, data: video, filename: fileName)
+            let vc = AddCaptionViewController(email: email, data: video, filename: filename)
             navigationController?.pushViewController(vc, animated: false)
-//            StorageManager.shared.uploadVideo(with: video, email: email, filename: fileName, completion: { result in
-//
-//                switch result {
-//                case .success(let urlString):
-//                    guard var email = UserDefaults.standard.value(forKey: "email") as! String? else {
-//                        return
-//                    }
-//                    email = email.replacingOccurrences(of: "@", with: "-").replacingOccurrences(of: ".", with: "-")
-//                    DatabaseManager.shared.insertNewPost(with: email, url: urlString)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            })
         }
     }
     

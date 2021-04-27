@@ -70,5 +70,4 @@ class GameLogHeaderView: UIView {
             isBatting = false
         }
     }
-
 }

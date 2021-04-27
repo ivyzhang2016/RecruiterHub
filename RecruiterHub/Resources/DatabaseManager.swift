@@ -434,10 +434,15 @@ public class DatabaseManager {
     
     // TODO: Do this function 
     public func getUserEndorsements( email: String, completion: @escaping (([[String:String]]?) -> Void))  {
-        database.child("\(email)/endorsements").observeSingleEvent(of: .value, with: { snapshot in
-            let dictionary = ["email": "myemail@gmail.com"]
-            dictionary["email"] // "myemail@gmail.com"
+        database.child("\(email)/endorsers").observeSingleEvent(of: .value, with: { snapshot in
+            guard let feedPosts = snapshot.value as? [[String:String]] else {
+                completion(nil)
+                return
+            }
+        
+            completion(feedPosts)
         })
+        
     }
     
     public func updateUserInfor( user: RHUser) {
