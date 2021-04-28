@@ -160,22 +160,6 @@ extension GameLogViewController: UITableViewDelegate, UITableViewDataSource, Gam
         }
     }
     
-    @objc private func didTapBatting(button: UIButton) {
-        if pitcherTableView.isHidden == true {
-            pitcherTableView.isHidden = false
-            batterTableView.isHidden = true
-            showPitcherLog = true
-            scrollView.contentSize = CGSize(width: view.width + 160, height: view.safeAreaInsets.bottom - view.safeAreaInsets.top)
-        }
-        else {
-            pitcherTableView.isHidden = true
-            batterTableView.isHidden = false
-            showPitcherLog = false
-            scrollView.contentSize = CGSize(width: view.width + 300, height: view.safeAreaInsets.bottom - view.safeAreaInsets.top)
-            batterTableView.frame = CGRect(x: 0, y: 0, width: scrollView.contentSize.width, height: scrollView.height)
-        }
-    }
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }

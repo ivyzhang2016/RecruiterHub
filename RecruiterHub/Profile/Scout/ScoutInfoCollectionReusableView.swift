@@ -15,9 +15,7 @@ final class ScoutInfoCollectionReusableView: UICollectionReusableView, UINavigat
     static let identifier = "ScoutInfoCollectionReusableView"
     
     public weak var delegate: ScoutInfoDelegate?
-    
-    public var size = 0
-    
+
     private let profilePhotoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
@@ -57,7 +55,6 @@ final class ScoutInfoCollectionReusableView: UICollectionReusableView, UINavigat
     }
     
     @objc private func didTapGameLog() {
-        print("Hello")
         delegate?.didTapGameLog(self)
     }
     
@@ -99,7 +96,6 @@ final class ScoutInfoCollectionReusableView: UICollectionReusableView, UINavigat
     }
     
     public static func getHeight() -> CGFloat {
-
         return 220.0
     }
 }

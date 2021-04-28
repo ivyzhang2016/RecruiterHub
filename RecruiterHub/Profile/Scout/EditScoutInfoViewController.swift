@@ -32,7 +32,6 @@ class EditScoutInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.tableHeaderView = createTableHeaderView()
         configureModels()
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -83,27 +82,6 @@ class EditScoutInfoViewController: UIViewController {
         DatabaseManager.shared.updateScoutInfoForUser(email: email, scoutInfo: scoutInfo)
         
         dismiss(animated: true, completion: nil)
-        // Save info to database
-//
-//        if let data = data {
-//            let fileName = user.emailAddress.safeDatabaseKey()
-//
-//            StorageManager.shared.uploadProfilePic(with: data, filename: fileName, completion: { result in
-//                switch result {
-//                case .success(let urlString):
-//                    DatabaseManager.shared.setProfilePic(with: fileName, url: urlString)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            })
-//        }
-//        else {
-//            print("Data is nil")
-//        }
-//
-//        DatabaseManager.shared.updateUserInfor(user: user)
-//
-//        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -114,14 +92,6 @@ extension EditScoutInfoViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-//    private func createTableHeaderView() -> UIView {
-//        let header = UIView(frame: CGRect(x: 0,
-//                                          y: 0,
-//                                          width: view.width,
-//                                          height: view.height/4).integral)
-//        return header
-//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.row]

@@ -93,7 +93,7 @@ final class EditProfileViewController: UIViewController {
         return "Private Information"
     }
     
-    func presentCamera() {
+    private func presentCamera() {
         let vc = UIImagePickerController()
         vc.sourceType = .camera
         vc.delegate = self
@@ -102,7 +102,7 @@ final class EditProfileViewController: UIViewController {
     }
     
     /// Presents the photo library to select a photo
-    func presentPhotoPicker() {
+    private func presentPhotoPicker() {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
         vc.delegate = self
@@ -265,8 +265,5 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         }
         
         data = selectedImage.pngData()
-        
-        
-        
     }
 }

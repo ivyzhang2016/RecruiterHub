@@ -16,7 +16,7 @@ class FeedViewController: UIViewController {
     
     private let NUMBEROFCELLS = 4
     
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let table = UITableView()
         table.allowsSelection = true
         return table
@@ -215,10 +215,20 @@ extension FeedViewController: FeedActionsCellDelegate {
         print("Tapped Like")
     }
     
-    func didTapSendButton(vc: UIViewController) {
+    func didTapSendButton(otherUserEmail: String, id: String?) {
         print("Tapped Send")
-        
-        navigationController?.pushViewController(vc, animated: true)
+        if let id = id {
+            let vc = ChatViewController(with: otherUserEmail, id: id)
+            vc.isNewConversation = false
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        else {
+            let vc = ChatViewController(with: otherUserEmail, id: nil)
+            vc.isNewConversation = true
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

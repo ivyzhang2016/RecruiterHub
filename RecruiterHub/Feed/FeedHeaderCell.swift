@@ -73,21 +73,8 @@ class FeedHeaderCell: UITableViewCell {
                 self?.usernameLabel.text = user.username
             }
             
-            if let url = URL(string: user.profilePicUrl) {
-                
+            if let url = URL(string: user.profilePicUrl) {                
                 self?.profilePicImageView.sd_setImage(with: url, completed: nil)
-//                DispatchQueue.global(qos: .background).async {
-//                    do {
-//                        let data = try Data(contentsOf: url)
-//
-//                        DispatchQueue.main.async {
-//                            self?.profilePicImageView.image = UIImage(data: data)
-//                        }
-//                    }
-//                    catch {
-//
-//                    }
-//                }
             }
         })
 

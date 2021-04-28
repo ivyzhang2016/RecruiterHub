@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 import AVFoundation
 
 class ViewPostViewController: UIViewController {
@@ -61,6 +62,10 @@ class ViewPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        //
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "cpu"), style: .plain, target: self, action: #selector(zoom))
+        NotificationCenter.default.addObserver(self, selector: #selector(replay), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
         // Add like button function call
         likeButton.addTarget(self, action: #selector(didTapLike), for: .touchUpInside)
         commentButton.addTarget(self, action: #selector(didTapComment), for: .touchUpInside)
@@ -71,7 +76,7 @@ class ViewPostViewController: UIViewController {
         
         // AVPlayer Layer Configuration
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer.videoGravity = .resizeAspectFill
+        playerLayer.videoGravity = .resizeAspect
         
         // Add subviews and layers
         view.layer.addSublayer(playerLayer)
@@ -240,6 +245,20 @@ class ViewPostViewController: UIViewController {
         navigationController?.pushViewController(newCommentVC, animated: true)
     }
     
+    // Function that is called when the like button is tapped
+    @objc private func zoom() {
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        }
+    }
+    
+    // Function that is called when the like button is tapped
+    @objc private func replay() {
+        player?.seek(to: CMTime(seconds: 0.0, preferredTimescale: 1))
+        player?.play()
+    }
     
     // Configure the like button
     private func configureLikesLabel() {

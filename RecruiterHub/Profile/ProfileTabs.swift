@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ProfileTabsDelegate: AnyObject {
-    func didTapGridButtonTab()
+    func didTapInfoButtonTab()
     func didTapScoutButtonTab()
 }
 
@@ -45,7 +45,7 @@ class ProfileTabs: UICollectionReusableView {
         addSubview(scoutButton)
         
         gridButton.addTarget(self,
-                             action: #selector(didTapGridButton),
+                             action: #selector(didTapInfoButton),
                              for: .touchUpInside)
 
         scoutButton.addTarget(self,
@@ -72,8 +72,8 @@ class ProfileTabs: UICollectionReusableView {
                                     height: size)
     }
     
-    @objc private func didTapGridButton() {
-        delegate?.didTapGridButtonTab()
+    @objc private func didTapInfoButton() {
+        delegate?.didTapInfoButtonTab()
     }
 
     @objc private func didTapTaggedButton() {

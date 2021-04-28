@@ -10,13 +10,6 @@ import UIKit
 class FeedPostInfoCell: UITableViewCell {
     static let identifier = "FeedPostInfoCell"
     
-    private let usernameLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.font = UIFont(name: "AppleSDGothicNeo-Thin", size: 12.0)
-        return label
-    }()
-    
     private let commentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
@@ -29,7 +22,6 @@ class FeedPostInfoCell: UITableViewCell {
     
     override init(style:UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(usernameLabel)
         contentView.addSubview(commentLabel)
     }
     
@@ -63,7 +55,6 @@ class FeedPostInfoCell: UITableViewCell {
             
             DatabaseManager.shared.getComments(with: email, index: index, completion: { comments in
                 if comments != nil {
-//                    self?.usernameLabel.text = comments?[0]["email"]
                     DatabaseManager.shared.getDataForUser(user: email, completion: {
                         user in
                         
@@ -96,14 +87,12 @@ class FeedPostInfoCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        usernameLabel.frame = CGRect(x: 10, y: 10, width: 100, height: 25)
         commentLabel.frame = CGRect(x: 10 , y: 0, width: contentView.width - 20 , height: 50)
 
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        usernameLabel.text = ""
         commentLabel.text = ""
     }
 }

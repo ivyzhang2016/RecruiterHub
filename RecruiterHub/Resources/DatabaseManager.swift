@@ -155,11 +155,14 @@ public class DatabaseManager {
 
     public enum DatabaseError: Error {
         case failedToFetch
+        case conversationsEmpty
         
         public var localizedDescription: String {
             switch self {
             case .failedToFetch:
                 return "Fetch failed"
+            case .conversationsEmpty:
+                return "Conversations Empty"
             }
         }
     }
@@ -431,10 +434,15 @@ public class DatabaseManager {
     
     // TODO: Do this function 
     public func getUserEndorsements( email: String, completion: @escaping (([[String:String]]?) -> Void))  {
-        database.child("\(email)/endorsements").observeSingleEvent(of: .value, with: { snapshot in
-            let dictionary = ["email": "myemail@gmail.com"]
-            dictionary["email"] // "myemail@gmail.com"
+        database.child("\(email)/endorsers").observeSingleEvent(of: .value, with: { snapshot in
+            guard let feedPosts = snapshot.value as? [[String:String]] else {
+                completion(nil)
+                return
+            }
+        
+            completion(feedPosts)
         })
+        
     }
     
     public func updateUserInfor( user: RHUser) {
@@ -847,8 +855,11 @@ public class DatabaseManager {
     
     // Creates a new conversation with target user email and first message sent
     public func createNewConversation( with otherUserEmail: String, name: String, firstMessage: Message, completion: @escaping (Bool) -> Void ) {
+        
         guard let currentEmail = UserDefaults.standard.value(forKey: "email") as? String,
-            let currentName = UserDefaults.standard.value(forKey: "name") else {
+            let currentName = UserDefaults.standard.value(forKey: "name") as? String else {
+            
+            completion(false)
             return
         }
         
@@ -919,10 +930,12 @@ public class DatabaseManager {
             // Update recipient conversation entry
             
             self?.database.child("\(otherUserEmail)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+                print(snapshot)
+                
                 if var conversations = snapshot.value as? [[String: Any]] {
                     // append
                     conversations.append(recipient_newConversationData)
-                    self?.database.child("\(otherUserEmail)/conversations").setValue(conversationID)
+                    self?.database.child("\(otherUserEmail)/conversations").setValue(conversations)
                 }
                 else {
                     //create
@@ -965,8 +978,15 @@ public class DatabaseManager {
     
     // Fetches and returns all conversations for the user with passed in email
     public func getAllConversations( for email: String, completion: @escaping (Result<[Conversation], Error>) -> Void ) {
-        database.child("\(email)/conversations").observe(.value, with: { snapshot in
+        database.child("\(email)/conversations").observeSingleEvent(of: .value, with: { snapshot in
+            
+            if snapshot.exists() == false {
+                completion(.failure(DatabaseError.conversationsEmpty))
+                return
+            }
+            
             guard let value = snapshot.value as? [[String: Any]] else {
+                print("Failed to get convos")
                 completion(.failure(DatabaseError.failedToFetch))
                 return
             }
